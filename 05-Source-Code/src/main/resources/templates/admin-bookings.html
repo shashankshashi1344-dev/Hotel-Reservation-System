@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Booking Management - Grand Stay</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        header {
+            background: #176b55;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        header h1 { margin-top: 0; }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #176b55;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .home-button { background: #475569; }
+
+        .filter-card, .table-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px #0000000d;
+        }
+
+        .filter-form {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select, .filter-button {
+            padding: 11px 14px;
+            border-radius: 7px;
+            border: 1px solid #cbd5e1;
+            font-size: 15px;
+        }
+
+        .filter-button {
+            background: #176b55;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .table-card { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            min-width: 1300px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #e8f3ef;
+            color: #176b55;
+        }
+
+        tbody tr:hover { background: #f8faf9; }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stay-status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .action-button {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .check-in { background: #176b55; }
+        .check-out { background: #b45309; }
+
+        .action-button:disabled {
+            background: #cbd5e1;
+            color: #475569;
+            cursor: not-allowed;
+        }
+
+        .action-form { margin: 4px 0; }
+
+        .success, .error {
+            padding: 12px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <header>
+        <h1>Admin Booking Management</h1>
+        <p>Manage reservations, guest check-in, and check-out.</p>
+    </header>
+
+    <div class="top-actions">
+        <a class="button" href="/dashboard">← Back to Dashboard</a>
+        <a class="button home-button" href="/my-bookings">My Bookings</a>
+    </div>
+
+    <div class="success" th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="error" th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <div class="filter-card">
+        <h2>Filter Bookings</h2>
+
+        <form class="filter-form" action="/admin/bookings" method="get">
+            <label for="status">Booking Status:</label>
+
+            <select name="status" id="status">
+                <option value="All"
+                        th:selected="${selectedStatus == 'All'}">
+                    All Bookings
+                </option>
+                <option value="Confirmed"
+                        th:selected="${selectedStatus == 'Confirmed'}">
+                    Confirmed
+                </option>
+                <option value="Cancelled"
+                        th:selected="${selectedStatus == 'Cancelled'}">
+                    Cancelled
+                </option>
+                <option value="Pending"
+                        th:selected="${selectedStatus == 'Pending'}">
+                    Pending
+                </option>
+            </select>
+
+            <button class="filter-button" type="submit">
+                Apply Filter
+            </button>
+        </form>
+    </div>
+
+    <div class="table-card">
+        <h2>Reservation Records</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Guest Name</th>
+                <th>Room Number</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Guests</th>
+                <th>Total (₹)</th>
+                <th>Booking Status</th>
+                <th>Stay Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking[0]}"></td>
+                <td th:text="${booking[1]}"></td>
+                <td th:text="${booking[2]}"></td>
+                <td th:text="${booking[3]}"></td>
+                <td th:text="${booking[4]}"></td>
+                <td th:text="${booking[5]}"></td>
+                <td th:text="${booking[6]}"></td>
+
+                <td>
+                    <span class="status"
+                          th:classappend="${booking[7] == 'Cancelled'} ? ' cancelled' : ''"
+                          th:text="${booking[7]}"></span>
+                </td>
+
+                <td>
+                    <span class="stay-status"
+                          th:text="${booking[8]}"></span>
+                </td>
+
+                <td>
+                    <a class="action-button"
+                        style="display:inline-block; background:#2563eb;
+                            text-decoration:none; margin-bottom:6px;"
+                        th:href="@{/admin/bookings/details/{id}(id=${booking[0]})}">
+                        View Details
+                    </a>
+                    <form class="action-form"
+                          th:if="${booking[7] != 'Cancelled' and booking[8] == 'Not Checked In'}"
+                          th:action="@{/admin/stay/check-in}"
+                          method="post"
+                          onsubmit="return confirm('Check in this guest?');">
+
+                        <input type="hidden" name="bookingId"
+                               th:value="${booking[0]}">
+
+                        <button class="action-button check-in" type="submit">
+                            Check In
+                        </button>
+                    </form>
+
+                    <form class="action-form"
+                          th:if="${booking[8] == 'Checked In'}"
+                          th:action="@{/admin/stay/check-out}"
+                          method="post"
+                          onsubmit="return confirm('Check out this guest?');">
+
+                        <input type="hidden" name="bookingId"
+                               th:value="${booking[0]}">
+
+                        <button class="action-button check-out" type="submit">
+                            Check Out
+                        </button>
+                    </form>
+
+                    <span th:if="${booking[8] == 'Checked Out'}">
+                        Stay Completed
+                    </span>
+
+                    <span th:if="${booking[7] == 'Cancelled'}">
+                        No Actions
+                    </span>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="10" class="empty">
+                    No bookings found for this status.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

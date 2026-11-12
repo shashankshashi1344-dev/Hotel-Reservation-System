@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Your Room | Grand Stay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ef;
+            color: #263238;
+            margin: 0;
+            padding: 30px 8%;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #0001;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 6px;
+            background: #173b35;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Complete Your Reservation</h1>
+
+    <p th:if="${error}" th:text="${error}"></p>
+
+    <div th:if="${room != null}">
+        <h2>
+            Room <span th:text="${room.roomNumber}"></span>
+            — <span th:text="${room.roomType}"></span>
+        </h2>
+
+        <p>
+            Price per night: ₹<span th:text="${room.pricePerNight}"></span>
+        </p>
+
+        <p>Check-in: <span th:text="${checkIn}"></span></p>
+        <p>Check-out: <span th:text="${checkOut}"></span></p>
+        <p>Guests: <span th:text="${guests}"></span></p>
+
+        <form action="/booking/confirm" method="post"
+              onsubmit="return validateBookingForm()">
+            
+            <input type="hidden" name="roomId"
+                th:value="${room.roomId}">
+
+            <input type="hidden" name="checkIn"
+                th:value="${checkIn}">
+
+            <input type="hidden" name="checkOut"
+                th:value="${checkOut}">
+
+            <input type="hidden" name="guests"
+                th:value="${guests}">
+
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="fullName" required>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" required>
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3"
+                      required></textarea>
+
+            <button type="submit">
+                Confirm Booking
+            </button>
+        </form>
+    </div>
+
+    <p><a href="/">Back to Home</a></p>
+</div>
+</body>
+
+<script>
+    function validateBookingForm() {
+        const checkIn = document.querySelector(
+            'input[name="checkIn"]'
+        ).value;
+
+        const checkOut = document.querySelector(
+            'input[name="checkOut"]'
+        ).value;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const checkInDate = new Date(checkIn + "T00:00:00");
+        const checkOutDate = new Date(checkOut + "T00:00:00");
+
+        if (isNaN(checkInDate.getTime()) ||
+            isNaN(checkOutDate.getTime())) {
+            alert("Please select valid check-in and check-out dates.");
+            return false;
+        }
+
+        if (checkInDate < today) {
+            alert("Check-in date cannot be in the past.");
+            return false;
+        }
+
+        if (checkOutDate <= checkInDate) {
+            alert("Check-out must be after check-in.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+</html>

@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Grand Stay</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ef;
+            color: #263238;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+
+        h1 {
+            color: #173b35;
+            text-align: center;
+        }
+
+        .notice {
+            background: #fff4d6;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .details {
+            background: #f7f9f8;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            background: #173b35;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #b42318;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Complete Your Payment</h1>
+
+    <p class="notice">
+        Academic demo only: this page simulates a payment.
+        It does not charge real money or connect to a payment gateway.
+    </p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <div th:if="${booking != null}">
+
+        <div class="details">
+            <p><strong>Booking ID:</strong>
+                <span th:text="${booking.bookingId}"></span></p>
+
+            <p><strong>Check-in:</strong>
+                <span th:text="${booking.checkIn}"></span></p>
+
+            <p><strong>Check-out:</strong>
+                <span th:text="${booking.checkOut}"></span></p>
+
+            <p><strong>Total Amount:</strong> ₹
+                <span th:text="${booking.totalAmount}"></span></p>
+        </div>
+
+        <form action="/payment/process" method="post"
+              th:if="${canPay == true}">
+
+            <input type="hidden"
+                   name="bookingId"
+                   th:value="${booking.bookingId}">
+
+            <label for="paymentMethod">Select Payment Method</label>
+
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="">Choose a method</option>
+                <option value="UPI">UPI (Demo)</option>
+                <option value="Card">Debit/Credit Card (Demo)</option>
+                <option value="Net Banking">Net Banking (Demo)</option>
+                <option value="Cash">Cash at Hotel (Demo)</option>
+            </select>
+
+            <button type="submit">Simulate Payment</button>
+        </form>
+
+    </div>
+
+    <p>
+        <a href="/my-bookings">Back to My Bookings</a>
+    </p>
+
+</div>
+</body>
+</html>

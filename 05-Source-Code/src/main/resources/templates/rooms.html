@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Available Rooms | Grand Stay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ef;
+            color: #263238;
+            margin: 0;
+            padding: 30px 8%;
+        }
+
+        h1 { color: #173b35; }
+
+        .room {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0001;
+        }
+
+        .price { color: #173b35; font-weight: bold; }
+
+        a { color: #173b35; }
+        
+        .book-button {
+        background: #173b35;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        }
+
+        .book-button:hover {
+        background: #24574e;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Available Rooms at Grand Stay</h1>
+
+    <p th:if="${error}" th:text="${error}"></p>
+
+    <p th:if="${rooms != null}">
+        Search for <span th:text="${guests}"></span> guest(s)
+        from <span th:text="${checkIn}"></span>
+        to <span th:text="${checkOut}"></span>.
+    </p>
+
+    <div th:if="${rooms != null and #lists.isEmpty(rooms)}">
+        No matching rooms found. Please try another guest count.
+    </div>
+
+    <div th:each="room : ${rooms}" class="room">
+        <h2>
+            Room <span th:text="${room.roomNumber}"></span>
+            — <span th:text="${room.roomType}"></span>
+        </h2>
+
+        <p th:text="${room.facilities}"></p>
+
+        <p>
+            Capacity: <span th:text="${room.capacity}"></span> guests
+        </p>
+
+        <p class="price">
+            ₹<span th:text="${room.pricePerNight}"></span> per night
+        </p>
+        
+        <form action="/booking/new" method="get">
+        <input type="hidden" name="roomId"
+            th:value="${room.roomId}">
+
+        <input type="hidden" name="checkIn"
+            th:value="${checkIn}">
+
+        <input type="hidden" name="checkOut"
+            th:value="${checkOut}">
+
+        <input type="hidden" name="guests"
+            th:value="${guests}">
+
+        <button type="submit" class="book-button">
+            Book Now
+        </button>
+        </form>
+    </div>
+
+    <p><a href="/">Back to home</a></p>
+</body>
+</html>

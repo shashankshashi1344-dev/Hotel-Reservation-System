@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details - Grand Stay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            color: #243047;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #183b56;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #183b56;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-top: 25px;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .label {
+            color: #65748b;
+            font-weight: bold;
+        }
+
+        .value {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 11px 18px;
+            background: #183b56;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back:hover {
+            background: #285878;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Booking Details</h1>
+    <p>Complete information for this reservation.</p>
+
+    <h2>Reservation</h2>
+
+    <div class="detail">
+        <span class="label">Booking ID</span>
+        <span class="value" th:text="${booking.bookingId}"></span>
+    </div>
+
+    
+    <h2>Guest Information</h2>
+
+    <div class="detail">
+        <span class="label">Guest Name</span>
+        <span class="value"
+            th:text="${guest != null ? guest.fullName : 'Guest information unavailable'}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Email</span>
+        <span class="value"
+            th:text="${guest != null ? guest.email : 'Not available'}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Phone</span>
+        <span class="value"
+            th:text="${guest != null ? guest.phone : 'Not available'}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Address</span>
+        <span class="value"
+            th:text="${guest != null ? guest.address : 'Not available'}"></span>
+    </div>
+
+    <h2>Room Information</h2>
+    
+    <div class="detail">
+        <span class="label">Room Number</span>
+        <span class="value"
+            th:text="${room != null ? room.roomNumber : 'Room information unavailable'}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Room Type</span>
+        <span class="value"
+            th:text="${room != null ? room.roomType : 'Not available'}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Price Per Night</span>
+        <span class="value"
+            th:text="${room != null ? '₹ ' + room.pricePerNight : 'Not available'}"></span>
+    </div>
+
+
+    <div class="detail">
+        <span class="label">Check-In Date</span>
+        <span class="value" th:text="${booking.checkIn}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Check-Out Date</span>
+        <span class="value" th:text="${booking.checkOut}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Number of Guests</span>
+        <span class="value" th:text="${booking.numberOfGuests}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Total Amount</span>
+        <span class="value"
+              th:text="'₹ ' + ${booking.totalAmount}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Booking Status</span>
+        <span class="value" th:text="${booking.bookingStatus}"></span>
+    </div>
+
+    <div class="detail">
+        <span class="label">Stay Status</span>
+        <span class="value" th:text="${booking.stayStatus}"></span>
+    </div>
+
+    <a class="back" th:href="@{/admin/bookings}">Back to All Bookings</a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Grand Stay</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ef;
+            color: #263238;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+
+        h1 {
+            color: #18864b;
+            text-align: center;
+        }
+
+        .notice {
+            background: #fff4d6;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .details {
+            background: #f7f9f8;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.9;
+            margin-top: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .button {
+            display: block;
+            text-align: center;
+            padding: 13px;
+            margin-top: 20px;
+            background: #173b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>✓ Payment Successful!</h1>
+
+    <p class="notice">
+        This is a simulated payment for the academic mini project.
+        No real money was charged.
+    </p>
+
+    <div class="details">
+        <p><strong>Booking ID:</strong>
+            <span th:text="${booking.bookingId}"></span></p>
+
+        <p><strong>Payment ID:</strong>
+            <span th:text="${payment.paymentId}"></span></p>
+
+        <p><strong>Amount:</strong> ₹
+            <span th:text="${payment.amount}"></span></p>
+
+        <p><strong>Payment Method:</strong>
+            <span th:text="${payment.paymentMethod}"></span></p>
+
+        <p><strong>Transaction ID:</strong>
+            <span th:text="${payment.transactionId}"></span></p>
+
+        <p><strong>Payment Status:</strong>
+            <span th:text="${payment.paymentStatus}"></span></p>
+
+        <p><strong>Payment Date:</strong>
+            <span th:text="${payment.paymentDate}"></span></p>
+    </div>
+
+    <a href="/my-bookings" class="button">View My Bookings</a>
+    <a href="/" class="button">Back to Home</a>
+
+</div>
+</body>
+</html>

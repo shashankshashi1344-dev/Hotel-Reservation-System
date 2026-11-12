@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Dashboard - Grand Stay</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        header {
+            background: #176b55;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 30px 0 18px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px #0000000d;
+            border-top: 4px solid #176b55;
+        }
+
+        .card p {
+            color: #64748b;
+            margin: 0 0 14px;
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #176b55;
+            overflow-wrap: anywhere;
+        }
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .link-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #176b55;
+            font-weight: bold;
+            box-shadow: 0 4px 16px #0000000d;
+        }
+
+        .link-card:hover {
+            background: #e5f3ed;
+        }
+
+        .notice {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            header {
+                align-items: flex-start;
+            }
+
+            .nav a {
+                display: inline-block;
+                margin: 8px 12px 0 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <header>
+        <div>
+            <h1>Grand Stay</h1>
+            <p>Hotel Management Dashboard</p>
+        </div>
+
+        <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/payment-history">Payment History</a>
+        </nav>
+    </header>
+
+    <h2 class="section-title">Dashboard Overview</h2>
+
+    <div class="cards">
+        <div class="card">
+            <p>Total Rooms</p>
+            <div class="number" th:text="${totalRooms}">0</div>
+        </div>
+
+        <div class="card">
+            <p>Available Rooms</p>
+            <div class="number" th:text="${availableRooms}">0</div>
+        </div>
+
+        <div class="card">
+            <p>Total Bookings</p>
+            <div class="number" th:text="${totalBookings}">0</div>
+        </div>
+
+        
+        <div class="card">
+            <p>Total Registered Guests</p>
+            <div class="number" th:text="${totalGuests}">0</div>
+        </div>
+
+        <div class="card">
+            <p>Confirmed Bookings</p>
+            <div class="number" th:text="${confirmedBookings}">0</div>
+        </div>
+
+        <div class="card">
+            <p>Successful Demo Payments</p>
+            <div class="number"
+                 th:text="${'₹' + #numbers.formatDecimal(totalPayments, 1, 'COMMA', 2, 'POINT')}">
+                ₹0.00
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Quick Actions</h2>
+
+    
+    <div class="links">
+        <a class="link-card" href="/">Search and Book Rooms →</a>
+
+        <a class="link-card" href="/my-bookings">
+            View All Bookings →
+        </a>
+
+        <a class="link-card" href="/payment-history">
+            View Payment History →
+        </a>
+
+        <a class="link-card" href="/admin/rooms">
+            Room Management →
+        </a>
+
+        <a class="link-card" href="/admin/bookings">
+            Booking Management →
+        </a>
+
+        <a class="link-card" href="/admin/guests">
+            Guest Management →
+        </a>
+    </div>
+
+
+    <div class="notice">
+        <strong>Academic project notice:</strong>
+        Payment totals represent simulated transactions only.
+        No real money is collected or transferred.
+    </div>
+
+</div>
+</body>
+</html>

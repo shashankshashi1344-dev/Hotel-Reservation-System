@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Room - Grand Stay</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .header {
+            background: #176b55;
+            color: white;
+            padding: 24px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 16px #0000000d;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 16px 0 7px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #176b55;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #10513f;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #176b55;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>Add New Room</h1>
+        <p>Enter the details to register a hotel room.</p>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/admin/rooms/save}"
+              th:object="${room}"
+              method="post">
+
+            <label for="roomNumber">Room Number</label>
+            <input id="roomNumber" type="text"
+                   th:field="*{roomNumber}"
+                   placeholder="e.g. 106"
+                   required maxlength="10">
+
+            <label for="roomType">Room Type</label>
+            <select id="roomType" th:field="*{roomType}" required>
+                <option value="">Select room type</option>
+                <option value="Single">Single</option>
+                <option value="Double">Double</option>
+                <option value="Deluxe">Deluxe</option>
+                <option value="Family">Family</option>
+                <option value="Suite">Suite</option>
+            </select>
+
+            <label for="pricePerNight">Price per Night (₹)</label>
+            <input id="pricePerNight" type="number"
+                   th:field="*{pricePerNight}"
+                   min="1" step="0.01" required>
+
+            <label for="capacity">Guest Capacity</label>
+            <input id="capacity" type="number"
+                   th:field="*{capacity}"
+                   min="1" max="20" required>
+
+            <label for="facilities">Facilities</label>
+            <textarea id="facilities" th:field="*{facilities}"
+                      rows="3" maxlength="255"
+                      placeholder="Wi-Fi, AC, TV"></textarea>
+
+            <button type="submit">Save Room</button>
+        </form>
+
+        <a class="back" href="/admin/rooms">← Back to Room Management</a>
+    </div>
+
+</div>
+</body>
+</html>

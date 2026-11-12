@@ -1,0 +1,29 @@
+HOTEL RESERVATION SYSTEM
+
+CSE 2271 – SOFTWARE DESIGN AND DEVELOPMENT
+CA-3 INNOVATIVE ASSESSMENT
+
+TEAM 6
+
+Team Members:
+38 - Alika Rajeevan
+39 - Pruthvish G
+45 - Varshitha R
+46 - Yashwanth Sahoo
+47 - Shashank B R
+
+PROJECT REQUIREMENTS
+
+Functional Requirements:
+FR1 - Search Rooms
+FR2 - Display Room Details
+FR3 - Select Room
+FR4 - Enter Guest Information
+FR5 - Verify Room Availability
+FR6 - Payment and Booking Confirmation
+FR7 - Check-in and Check-out
+FR8 - Cancellation and Alternative Room/Date
+
+Non-Functional Requirements:
+NFR1 - Usability
+NFR2 - Security

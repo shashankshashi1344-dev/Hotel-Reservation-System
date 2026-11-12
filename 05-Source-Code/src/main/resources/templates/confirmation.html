@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Grand Stay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+            color: #263238;
+        }
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+        .success {
+            color: #18864b;
+            text-align: center;
+            font-size: 24px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #607d8b;
+        }
+        .details {
+            background: #f7f9f8;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.9;
+        }
+        .button {
+            display: block;
+            text-align: center;
+            background: #176b55;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 22px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="success">✓ Booking Confirmed!</h1>
+    <p class="subtitle">Thank you for choosing Grand Stay Hotel.</p>
+
+    <div class="details">
+        <p><strong>Booking ID:</strong>
+            <span th:text="${booking.bookingId}"></span></p>
+
+        <p><strong>Guest Name:</strong>
+            <span th:text="${guest.fullName}"></span></p>
+
+        <p><strong>Email:</strong>
+            <span th:text="${guest.email}"></span></p>
+
+        <p><strong>Room Number:</strong>
+            <span th:text="${room.roomNumber}"></span></p>
+
+        <p><strong>Room Type:</strong>
+            <span th:text="${room.roomType}"></span></p>
+
+        <p><strong>Check-in:</strong>
+            <span th:text="${booking.checkIn}"></span></p>
+
+        <p><strong>Check-out:</strong>
+            <span th:text="${booking.checkOut}"></span></p>
+
+        <p><strong>Number of Nights:</strong>
+            <span th:text="${nights}"></span></p>
+
+        <p><strong>Guests:</strong>
+            <span th:text="${booking.numberOfGuests}"></span></p>
+
+        <p><strong>Total Amount:</strong> ₹
+            <span th:text="${booking.totalAmount}"></span></p>
+
+        <p><strong>Status:</strong>
+            <span th:text="${booking.bookingStatus}"></span></p>
+    </div>
+
+    <a href="/" class="button">Back to Home</a>
+</div>
+</body>
+</html>

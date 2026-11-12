@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History - Grand Stay</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+
+        h1 {
+            color: #176b55;
+            text-align: center;
+        }
+
+        .notice {
+            padding: 12px;
+            background: #fff4d6;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        th {
+            background: #176b55;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f7f9f8;
+        }
+
+        .success {
+            color: #18864b;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #607d8b;
+        }
+
+        .button {
+            display: inline-block;
+            background: #176b55;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Payment History</h1>
+
+    <p class="notice">
+        Academic project demonstration: transactions shown here are simulated.
+        No real money is charged or transferred.
+    </p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Booking ID</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Transaction ID</th>
+                <th>Payment Date</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.paymentId}"></td>
+                <td th:text="${payment.bookingId}"></td>
+                <td>₹<span th:text="${payment.amount}"></span></td>
+                <td th:text="${payment.paymentMethod}"></td>
+                <td th:text="${payment.paymentStatus}"
+                    th:classappend="${payment.paymentStatus == 'Successful'} ? ' success' : ''">
+                </td>
+                <td th:text="${payment.transactionId}"></td>
+                <td th:text="${payment.paymentDate}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(payments)}">
+                <td colspan="7" class="empty">
+                    No payment records found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/my-bookings" class="button">Back to My Bookings</a>
+    <a href="/" class="button">Back to Home</a>
+
+</div>
+</body>
+</html>

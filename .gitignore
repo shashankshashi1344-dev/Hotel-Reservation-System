@@ -1,0 +1,24 @@
+﻿# Java / Maven generated files
+**/target/
+*.class
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Operating system files
+Thumbs.db
+.DS_Store
+
+# Environment variables and secrets
+.env
+.env.*
+application-local.properties
+
+# Database backups - add only a sanitised export later
+04-Database/*.sql
+
+# Local working copy - source is submitted in 05-Source-Code
+/demo/

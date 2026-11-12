@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Grand Stay</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+
+        h1 {
+            color: #176b55;
+            text-align: center;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #176b55;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f7f9f8;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #607d8b;
+        }
+
+        .button {
+            display: inline-block;
+            background: #176b55;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .cancel-button {
+            background: #b42318;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pay-button {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 7px 10px;
+            background: #176b55;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .cancelled {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .paid {
+            color: #18864b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>My Bookings</h1>
+    <p>View all reservations saved in the hotel system.</p>
+
+    <div th:if="${message}"
+         th:text="${message}"
+         style="padding:12px; margin-top:15px; background:#e8f5e9;
+                color:#176b55; border-radius:6px;">
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Guest ID</th>
+                <th>Room ID</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Guests</th>
+                <th>Total Amount</th>
+                <th>Booking Status</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.bookingId}"></td>
+                <td th:text="${booking.guestId}"></td>
+                <td th:text="${booking.roomId}"></td>
+                <td th:text="${booking.checkIn}"></td>
+                <td th:text="${booking.checkOut}"></td>
+                <td th:text="${booking.numberOfGuests}"></td>
+
+                <td>
+                    ₹<span th:text="${booking.totalAmount}"></span>
+                </td>
+
+                <td>
+                    <span th:text="${booking.bookingStatus}"
+                          th:classappend="${booking.bookingStatus == 'Cancelled'} ? ' cancelled' : ' status'">
+                    </span>
+                </td>
+
+                <td>
+                    <th:block th:with="payments=${paymentRepository.findByBookingIdOrderByPaymentIdDesc(booking.bookingId)}">
+                        <span th:if="${payments.isEmpty()}">
+                            Not Paid
+                        </span>
+
+                        <span th:unless="${payments.isEmpty()}"
+                              th:text="${payments.get(0).paymentMethod}">
+                        </span>
+                    </th:block>
+                </td>
+
+                
+                <td>
+                    <th:block th:with="payments=${paymentRepository.findByBookingIdOrderByPaymentIdDesc(booking.bookingId)}">
+
+                        <span th:if="${payments.isEmpty()}">Pending</span>
+
+                        <span th:unless="${payments.isEmpty()}"
+                            th:text="${payments.get(0).paymentStatus}">
+                        </span>
+
+                        <div th:if="${payments.isEmpty() and booking.bookingStatus != 'Cancelled'}"
+                            style="margin-top:8px;">
+                            <a th:href="@{/payment(bookingId=${booking.bookingId})}"
+                            style="display:inline-block; padding:8px 12px;
+                                    background:#176b55; color:white;
+                                    text-decoration:none; border-radius:5px;">
+                                Pay Now
+                            </a>
+                        </div>
+
+                    </th:block>
+                </td>
+
+
+                <td>
+                    <form th:if="${booking.bookingStatus != 'Cancelled'}"
+                          action="/booking/cancel"
+                          method="post"
+                          onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+
+                        <input type="hidden"
+                               name="bookingId"
+                               th:value="${booking.bookingId}">
+
+                        <button type="submit" class="cancel-button">
+                            Cancel Booking
+                        </button>
+                    </form>
+
+                    <span th:if="${booking.bookingStatus == 'Cancelled'}"
+                          class="cancelled">
+                        Cancelled
+                    </span>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="11" class="empty">
+                    No bookings found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/" class="button">Back to Home</a>
+
+</div>
+</body>
+</html>
